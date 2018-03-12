@@ -1421,10 +1421,20 @@ typedef struct {
 	CHAR16* VolumeLabel;
 } EFI_FILE_SYSTEM_VOLUME_LABEL;
 
+
+typedef UINT8* va_list;
+
+#define va_size(x) sizeof(x)
+
+#define va_start(list, arg) (list = ((va_list)&arg) + va_size(arg))
+#define va_arg(list, type) (*(type*)((list += va_size(type)) - va_size(type)))
+#define va_end(list) list = (va_list)0;
+
 VOID InitializeLibrary(EFI_HANDLE handle, EFI_SYSTEM_TABLE* systable);
 
 VOID memset(VOID* dst, UINT8 v, UINTN size);
 VOID memcpy(VOID* dst, CONST VOID* src, UINTN size);
 UINTN strlen(CONST CHAR16* string);
 
-
+UINTN sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...);
+UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list);
