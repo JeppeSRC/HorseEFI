@@ -13,3 +13,12 @@ VOID memcpy(VOID* dst, CONST VOID* src, UINTN size) {
 		((UINT8*)dst)[i] = ((UINT8*)src)[i];
 	}
 }
+
+#pragma function(strlen)
+UINTN strlen(CONST CHAR16* string) {
+	UINTN len = 0;
+
+	while (string[len++] != 0);
+
+	return len;
+}
