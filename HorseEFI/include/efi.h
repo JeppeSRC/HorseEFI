@@ -1421,7 +1421,10 @@ typedef struct {
 	CHAR16* VolumeLabel;
 } EFI_FILE_SYSTEM_VOLUME_LABEL;
 
+VOID InitializeLibrary(EFI_HANDLE handle, EFI_SYSTEM_TABLE* systable);
+
 VOID memset(VOID* dst, UINT8 v, UINTN size);
 VOID memcpy(VOID* dst, CONST VOID* src, UINTN size);
 UINTN strlen(CONST CHAR16* string);
+
 
