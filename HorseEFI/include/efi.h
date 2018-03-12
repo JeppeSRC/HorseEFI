@@ -1380,6 +1380,7 @@ typedef struct EFI_FILE_PROTOCOL {
 //*******************************************************
 // File Attribute Bits
 //*******************************************************
+
 #define EFI_FILE_READ_ONLY 0x0000000000000001
 #define EFI_FILE_HIDDEN 0x0000000000000002
 #define EFI_FILE_SYSTEM 0x0000000000000004
@@ -1419,3 +1420,6 @@ typedef struct {
 typedef struct {
 	CHAR16* VolumeLabel;
 } EFI_FILE_SYSTEM_VOLUME_LABEL;
+
+VOID memset(VOID* dst, UINT8 v, UINTN size);
+VOID memcpy(VOID* dst, CONST VOID* src, UINTN size);
