@@ -93,6 +93,10 @@ VOID print(CONST CHAR16* string) {
 	systable->ConOut->OutputString(systable->ConOut, string);
 }
 
+VOID clearScreen() {
+	systable->ConOut->ClearScreen(systable->ConOut);
+}
+
 VOID printf(CONST CHAR16* format, ...) {
 	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
 
