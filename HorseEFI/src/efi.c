@@ -89,9 +89,8 @@ UINTN strlen(CONST CHAR16* string) {
 	return len;
 }
 
-VOID println(CONST CHAR16* string) {
-	printf(string);
-	printf("\n");
+VOID print(CONST CHAR16* string) {
+	systable->ConOut->OutputString(systable->ConOut, string);
 }
 
 VOID printf(CONST CHAR16* format, ...) {
