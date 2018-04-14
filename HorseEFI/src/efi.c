@@ -90,7 +90,7 @@ UINTN strlen(CONST CHAR16* string) {
 }
 
 VOID print(CONST CHAR16* string) {
-	systable->ConOut->OutputString(systable->ConOut, string);
+	systable->ConOut->OutputString(systable->ConOut, (CHAR16*)string);
 }
 
 VOID clearScreen() {
