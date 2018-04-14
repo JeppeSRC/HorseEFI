@@ -1,5 +1,7 @@
 #include <efi.h>
 
+#define HORSE_EFI_PRINTF_BUFFER_SIZE 2048
+
 static EFI_HANDLE handle;
 static EFI_SYSTEM_TABLE* systable;
 
@@ -85,6 +87,22 @@ UINTN strlen(CONST CHAR16* string) {
 	while (string[len++] != 0);
 
 	return len;
+}
+
+VOID println(CONST CHAR16* string) {
+	printf(string);
+	printf("\n");
+}
+
+VOID printf(CONST CHAR16* format, ...) {
+	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
+
+	va_list args;
+	va_start(args, format);
+	vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, args);
+	va_end(args);
+
+	print(buffer);
 }
 
 UINTN sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...) {

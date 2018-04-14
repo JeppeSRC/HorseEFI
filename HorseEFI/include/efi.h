@@ -1436,5 +1436,8 @@ VOID memset(VOID* dst, UINT8 v, UINTN size);
 VOID memcpy(VOID* dst, CONST VOID* src, UINTN size);
 UINTN strlen(CONST CHAR16* string);
 
-UINTN sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...);
-UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list);
+VOID print(CONST CHAR16* string);
+
+VOID __cdecl printf(CONST CHAR16* format, ...);
+UINTN __cdecl sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...);
+UINTN __cdecl vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list);
