@@ -1439,5 +1439,6 @@ UINTN strlen(CONST CHAR16* string);
 VOID print(CONST CHAR16* string);
 
 VOID __cdecl printf(CONST CHAR16* format, ...);
+VOID __cdecl vprintf(CONST CHAR16* format, va_list list);
 UINTN __cdecl sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...);
 UINTN __cdecl vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list);

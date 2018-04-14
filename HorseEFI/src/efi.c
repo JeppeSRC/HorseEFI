@@ -104,6 +104,14 @@ VOID printf(CONST CHAR16* format, ...) {
 	print(buffer);
 }
 
+VOID vprintf(CONST CHAR16* format, va_list list) {
+	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
+
+	vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list);
+
+	print(buffer);
+}
+
 UINTN sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...) {
 
 	va_list list;
