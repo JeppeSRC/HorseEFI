@@ -114,6 +114,7 @@ UINTN sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...) {
 }
 
 UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list) {
+	if (!buffer || !bufferSize || !format) return ~0;
 
 	UINTN len = strlen(format);
 	UINTN printed = 0;
@@ -191,6 +192,6 @@ UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list l
 	}
 
 	buffer[printed++] = 0;
-	memset(buffer, 0, 12);
+	
 	return printed;
 }
