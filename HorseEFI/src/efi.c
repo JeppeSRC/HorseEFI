@@ -206,3 +206,25 @@ UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list l
 	
 	return printed;
 }
+
+EFI_GRAPHICS_OUTPUT_MODE_INFORMATION GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32 width, UINT32 height, EFI_GRAPHICS_PIXEL_FORMAT format, UINT32* CONST modeIndex) {
+	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION modeInfo;
+	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION* pModeInfo = &modeInfo;
+
+	EFI_STATUS status = 0;
+	UINTN size = 0;
+
+	for (*modeIndex = 0; (status = gop->QueryMode(gop, *modeIndex, &size, &pModeInfo)) == EFI_SUCCESS; (*modeIndex)++) {
+		if (modeInfo.HorizontalResolution == width && modeInfo.VerticalResolution == height && modeInfo.PixelFormat == format) {
+			break;
+		}
+	}
+
+	if (status == EFI_SUCCESS) {
+		return modeInfo;
+	}
+
+	gop->QueryMode(gop, (*modeIndex)--, &size, &pModeInfo);
+
+	return modeInfo;
+}
