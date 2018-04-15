@@ -259,7 +259,7 @@ UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST colu
 			return 1;
 		} 
 
-		*rows == 25;
+		*rows = 25;
 
 		return 0;
 	}
