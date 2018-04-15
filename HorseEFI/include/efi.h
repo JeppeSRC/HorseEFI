@@ -44,7 +44,7 @@ _______________________________________________
 #define EFI_SUCCESS 0
 
 #ifdef _M_AMD64
-#define HIGH_BIT (1 << 63)
+#define HIGH_BIT (1ULL << 63)
 #else 
 #define HIGH_BIT (1 << 31)
 #endif
