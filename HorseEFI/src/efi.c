@@ -207,6 +207,22 @@ UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list l
 	return printed;
 }
 
+UINTN fprintf(EFI_FILE_PROTOCOL* file, CONST CHAR16* CONST format, ...) {
+	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
+
+	va_list list;
+	
+	va_start(list, format);
+	UINTN written = vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list);
+	va_end(list);
+
+	EFI_STATUS status = WriteFile(file, written, buffer);
+
+	if (status != EFI_SUCCESS) written = 0;
+
+	return written;
+}
+
 UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format) {
 	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION modeInfo;
 	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION* pModeInfo = &modeInfo;

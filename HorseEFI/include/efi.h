@@ -1437,13 +1437,13 @@ VOID memcpy(VOID* dst, CONST VOID* src, UINTN size);
 UINTN strlen(CONST CHAR16* string);
 
 VOID print(CONST CHAR16* string);
-VOID println(CONST CHAR16* string);
 VOID clearScreen();
 
 VOID __cdecl printf(CONST CHAR16* format, ...);
 VOID __cdecl vprintf(CONST CHAR16* format, va_list list);
 UINTN __cdecl sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...);
 UINTN __cdecl vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list);
+UINTN __cdecl fprintf(EFI_FILE_PROTOCOL* file, CONST CHAR16* CONST format, ...);
 
 UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format);
 UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, UINTN* CONST rows);
