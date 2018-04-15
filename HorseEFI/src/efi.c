@@ -252,9 +252,9 @@ UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST colu
 	UINTN c;
 	UINTN r;
 
-	if (columns == 80 && rows == 25) return 0;
+	if (*columns == 80 && *rows == 25) return 0;
 
-	if (columns == 80 && rows == 50) {
+	if (*columns == 80 && *rows == 50) {
 		if (text->QueryMode(text, 1, &c, &r) != EFI_UNSUPPORTED) {
 			return 1;
 		} 
@@ -267,7 +267,7 @@ UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST colu
 	for (UINTN i = 2; i < text->Mode->MaxMode; i++) {
 		text->QueryMode(text, i, &c, &r);
 
-		if (c == columns && r == rows) {
+		if (c == *columns && r == *rows) {
 			return i;
 		}
 	}
