@@ -230,3 +230,34 @@ EFI_GRAPHICS_OUTPUT_MODE_INFORMATION GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCO
 
 	return modeInfo;
 }
+
+UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, UINTN* CONST rows) {
+	UINTN c;
+	UINTN r;
+
+	if (columns == 80 && rows == 25) return 0;
+
+	if (columns == 80 && rows == 50) {
+		if (text->QueryMode(text, 1, &c, &r) != EFI_UNSUPPORTED) {
+			return 1;
+		} 
+
+		*rows == 25;
+
+		return 0;
+	}
+
+	for (UINTN i = 2; i < text->Mode->MaxMode; i++) {
+		text->QueryMode(text, i, &c, &r);
+
+		if (c == columns && r == rows) {
+			return i;
+		}
+	}
+
+	UINTN best = text->Mode->MaxMode-1;
+
+	text->QueryMode(text, best, columns, rows);
+
+	return best;
+}
