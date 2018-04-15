@@ -214,17 +214,19 @@ EFI_GRAPHICS_OUTPUT_MODE_INFORMATION GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCO
 	EFI_STATUS status = 0;
 	UINTN size = 0;
 
-	for (*modeIndex = 0; (status = gop->QueryMode(gop, *modeIndex, &size, &pModeInfo)) == EFI_SUCCESS; (*modeIndex)++) {
+	for (UINT32 i = 0; i < gop->Mode->MaxMode; i++) {
+		gop->QueryMode(gop, i, &size, &pModeInfo);
 		if (modeInfo.HorizontalResolution == width && modeInfo.VerticalResolution == height && modeInfo.PixelFormat == format) {
-			break;
+			*modeIndex = i;
+			return modeInfo;
 		}
 	}
-
+	
 	if (status == EFI_SUCCESS) {
 		return modeInfo;
 	}
 
-	gop->QueryMode(gop, (*modeIndex)--, &size, &pModeInfo);
+	gop->QueryMode(gop, gop->Mode->MaxMode-1, &size, &pModeInfo);
 
 	return modeInfo;
 }
