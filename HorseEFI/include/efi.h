@@ -1444,5 +1444,5 @@ VOID __cdecl vprintf(CONST CHAR16* format, va_list list);
 UINTN __cdecl sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...);
 UINTN __cdecl vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list);
 
-EFI_GRAPHICS_OUTPUT_MODE_INFORMATION GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32 width, UINT32 height, EFI_GRAPHICS_PIXEL_FORMAT format, UINT32* CONST modeIndex);
+UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format);
 UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, UINTN* CONST rows);

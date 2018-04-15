@@ -207,7 +207,7 @@ UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list l
 	return printed;
 }
 
-EFI_GRAPHICS_OUTPUT_MODE_INFORMATION GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32 width, UINT32 height, EFI_GRAPHICS_PIXEL_FORMAT format, UINT32* CONST modeIndex) {
+UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format) {
 	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION modeInfo;
 	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION* pModeInfo = &modeInfo;
 
@@ -216,19 +216,20 @@ EFI_GRAPHICS_OUTPUT_MODE_INFORMATION GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCO
 
 	for (UINT32 i = 0; i < gop->Mode->MaxMode; i++) {
 		gop->QueryMode(gop, i, &size, &pModeInfo);
-		if (modeInfo.HorizontalResolution == width && modeInfo.VerticalResolution == height && modeInfo.PixelFormat == format) {
-			*modeIndex = i;
-			return modeInfo;
+		if (modeInfo.HorizontalResolution == *width && modeInfo.VerticalResolution == *height && modeInfo.PixelFormat == *format) {
+			return i;
 		}
 	}
 	
-	if (status == EFI_SUCCESS) {
-		return modeInfo;
-	}
+	UINT32 best = gop->Mode->MaxMode-1;
 
-	gop->QueryMode(gop, gop->Mode->MaxMode-1, &size, &pModeInfo);
+	gop->QueryMode(gop, best, &size, &pModeInfo);
 
-	return modeInfo;
+	*width = modeInfo.HorizontalResolution;
+	*height = modeInfo.VerticalResolution;
+	*format = modeInfo.PixelFormat;
+
+	return best;
 }
 
 UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, UINTN* CONST rows) {
