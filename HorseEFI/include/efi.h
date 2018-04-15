@@ -1430,6 +1430,8 @@ typedef UINT8* va_list;
 #define va_arg(list, type) (*(type*)((list += va_size(type)) - va_size(type)))
 #define va_end(list) list = (va_list)0;
 
+#pragma warning(disable : 4391)
+
 VOID InitializeLibrary(EFI_HANDLE handle, EFI_SYSTEM_TABLE* systable);
 
 VOID memset(VOID* dst, UINT8 v, UINTN size);
