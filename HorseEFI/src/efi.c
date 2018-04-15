@@ -289,9 +289,9 @@ EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* CONST root, CONST CHAR16* CONST f
 	if (status == EFI_NOT_FOUND) {
 		printf(L"Failed to open file: \"%s\" not found\n", filename);
 	} else if (status == EFI_WRITE_PROTECTED) {
-		printf("Failed to open file: \"%s\" write protected\n", filename);
+		printf(L"Failed to open file: \"%s\" write protected\n", filename);
 	} else {
-		printf("Failed to open file: \"%s\" unhandled error", filename);
+		printf(L"Failed to open file: \"%s\" unhandled error", filename);
 	}
 
 	return 0;
