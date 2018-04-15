@@ -1437,6 +1437,7 @@ VOID memcpy(VOID* dst, CONST VOID* src, UINTN size);
 UINTN strlen(CONST CHAR16* string);
 
 VOID print(CONST CHAR16* string);
+VOID println(CONST CHAR16* string);
 VOID clearScreen();
 
 VOID __cdecl printf(CONST CHAR16* format, ...);
@@ -1446,3 +1447,11 @@ UINTN __cdecl vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, v
 
 UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format);
 UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, UINTN* CONST rows);
+
+EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* root, CONST CHAR16* CONST filename, UINT64 openMode, UINT64 attributes);
+VOID CloseFile(EFI_FILE_PROTOCOL* file);
+BOOLEAN DeleteFile(EFI_FILE_PROTOCOL* file);
+EFI_STATUS ReadFile(EFI_FILE_PROTOCOL* file, UINTN* CONST size, VOID* CONST buffer);
+EFI_STATUS WriteFile(EFI_FILE_PROTOCOL* file, UINTN* CONST size, VOID* CONST buffer);
+EFI_STATUS SetPosition(EFI_FILE_PROTOCOL* file, UINT64 position);
+UINT64 GetPosition(EFI_FILE_PROTOCOL* file);

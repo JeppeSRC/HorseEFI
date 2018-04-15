@@ -262,3 +262,53 @@ UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, U
 
 	return best;
 }
+
+EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* root, CONST CHAR16* CONST filename, UINT64 openMode, UINT64 attributes) {
+	EFI_FILE_PROTOCOL* newFile;
+
+	EFI_STATUS status = root->Open(root, &newFile, filename, openMode, attributes);
+
+	if (status == EFI_SUCCESS) return newFile;
+	
+	if (status == EFI_NOT_FOUND) {
+		printf(L"Failed to open file: \"%s\" not found\n", filename);
+	} else if (status == EFI_WRITE_PROTECTED) {
+		printf("Failed to open file: \"%s\" write protected\n", filename);
+	} else {
+		printf("Failed to open file: \"%s\" unhandled error", filename);
+	}
+
+	return 0;
+}
+
+VOID CloseFile(EFI_FILE_PROTOCOL* file) {
+	file->Close(file);
+}
+
+BOOLEAN DeleteFile(EFI_FILE_PROTOCOL* file) {
+	return file->Delete(file) == EFI_SUCCESS ? 1 : 0;
+}
+
+EFI_STATUS ReadFile(EFI_FILE_PROTOCOL* file, UINTN* CONST size, VOID* CONST buffer) {
+	return file->Read(file, size, buffer);
+}
+
+EFI_STATUS WriteFile(EFI_FILE_PROTOCOL* file, UINTN* CONST size, VOID* CONST buffer) {
+	return file->Write(file, size, buffer);
+}
+
+EFI_STATUS SetPosition(EFI_FILE_PROTOCOL* file, UINT64 position) {
+	return file->SetPosition(file, position);
+}
+
+UINT64 GetPosition(EFI_FILE_PROTOCOL* file) {
+	UINT64 pos;
+
+	EFI_STATUS status = file->GetPosition(file, &pos);
+
+	if (status == EFI_UNSUPPORTED) {
+		pos = ~0;
+	}
+
+	return pos;
+}
