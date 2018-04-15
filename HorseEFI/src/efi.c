@@ -81,7 +81,7 @@ VOID memcpy(VOID* dst, CONST VOID* src, UINTN size) {
 }
 
 #pragma function(strlen)
-UINTN strlen(CONST CHAR16* string) {
+UINTN strlen(CONST CHAR16* CONST string) {
 	UINTN len = 0;
 
 	while (string[len++] != 0);
@@ -89,7 +89,7 @@ UINTN strlen(CONST CHAR16* string) {
 	return len;
 }
 
-VOID print(CONST CHAR16* string) {
+VOID print(CONST CHAR16* CONST string) {
 	systable->ConOut->OutputString(systable->ConOut, (CHAR16*)string);
 }
 
@@ -97,7 +97,7 @@ VOID clearScreen() {
 	systable->ConOut->ClearScreen(systable->ConOut);
 }
 
-VOID printf(CONST CHAR16* format, ...) {
+VOID printf(CONST CHAR16* CONST format, ...) {
 	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
 
 	va_list args;
@@ -108,7 +108,7 @@ VOID printf(CONST CHAR16* format, ...) {
 	print(buffer);
 }
 
-VOID vprintf(CONST CHAR16* format, va_list list) {
+VOID vprintf(CONST CHAR16* CONST format, va_list list) {
 	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
 
 	vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list);
@@ -116,7 +116,7 @@ VOID vprintf(CONST CHAR16* format, va_list list) {
 	print(buffer);
 }
 
-UINTN sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...) {
+UINTN sprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, ...) {
 
 	va_list list;
 	va_start(list, format);
@@ -124,7 +124,7 @@ UINTN sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...) {
 	return vsprintf(buffer, bufferSize, format, list);
 }
 
-UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list) {
+UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, va_list list) {
 	if (!buffer || !bufferSize || !format) return ~0;
 
 	UINTN len = strlen(format);
@@ -207,7 +207,7 @@ UINTN vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list l
 	return printed;
 }
 
-UINTN fprintf(EFI_FILE_PROTOCOL* file, CONST CHAR16* CONST format, ...) {
+UINTN fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...) {
 	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
 
 	va_list list;
@@ -216,7 +216,7 @@ UINTN fprintf(EFI_FILE_PROTOCOL* file, CONST CHAR16* CONST format, ...) {
 	UINTN written = vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list);
 	va_end(list);
 
-	EFI_STATUS status = WriteFile(file, written, buffer);
+	EFI_STATUS status = WriteFile(file, &written, buffer);
 
 	if (status != EFI_SUCCESS) written = 0;
 
@@ -248,7 +248,7 @@ UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST wi
 	return best;
 }
 
-UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, UINTN* CONST rows) {
+UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST columns, UINTN* CONST rows) {
 	UINTN c;
 	UINTN r;
 
@@ -279,7 +279,7 @@ UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, U
 	return best;
 }
 
-EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* root, CONST CHAR16* CONST filename, UINT64 openMode, UINT64 attributes) {
+EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* CONST root, CONST CHAR16* CONST filename, UINT64 openMode, UINT64 attributes) {
 	EFI_FILE_PROTOCOL* newFile;
 
 	EFI_STATUS status = root->Open(root, &newFile, filename, openMode, attributes);
@@ -297,27 +297,27 @@ EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* root, CONST CHAR16* CONST filenam
 	return 0;
 }
 
-VOID CloseFile(EFI_FILE_PROTOCOL* file) {
+VOID CloseFile(EFI_FILE_PROTOCOL* CONST file) {
 	file->Close(file);
 }
 
-BOOLEAN DeleteFile(EFI_FILE_PROTOCOL* file) {
+BOOLEAN DeleteFile(EFI_FILE_PROTOCOL* CONST file) {
 	return file->Delete(file) == EFI_SUCCESS ? 1 : 0;
 }
 
-EFI_STATUS ReadFile(EFI_FILE_PROTOCOL* file, UINTN* CONST size, VOID* CONST buffer) {
+EFI_STATUS ReadFile(EFI_FILE_PROTOCOL* CONST file, UINTN* CONST size, VOID* CONST buffer) {
 	return file->Read(file, size, buffer);
 }
 
-EFI_STATUS WriteFile(EFI_FILE_PROTOCOL* file, UINTN* CONST size, VOID* CONST buffer) {
+EFI_STATUS WriteFile(EFI_FILE_PROTOCOL* CONST file, UINTN* CONST size, CONST VOID* CONST buffer) {
 	return file->Write(file, size, buffer);
 }
 
-EFI_STATUS SetPosition(EFI_FILE_PROTOCOL* file, UINT64 position) {
+EFI_STATUS SetPosition(EFI_FILE_PROTOCOL* CONST file, UINT64 position) {
 	return file->SetPosition(file, position);
 }
 
-UINT64 GetPosition(EFI_FILE_PROTOCOL* file) {
+UINT64 GetPosition(EFI_FILE_PROTOCOL* CONST file) {
 	UINT64 pos;
 
 	EFI_STATUS status = file->GetPosition(file, &pos);

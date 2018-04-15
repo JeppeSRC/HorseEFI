@@ -1434,24 +1434,24 @@ VOID InitializeLibrary(EFI_HANDLE handle, EFI_SYSTEM_TABLE* systable);
 
 VOID memset(VOID* dst, UINT8 v, UINTN size);
 VOID memcpy(VOID* dst, CONST VOID* src, UINTN size);
-UINTN strlen(CONST CHAR16* string);
+UINTN strlen(CONST CHAR16* CONST string);
 
-VOID print(CONST CHAR16* string);
+VOID print(CONST CHAR16* CONST string);
 VOID clearScreen();
 
-VOID __cdecl printf(CONST CHAR16* format, ...);
-VOID __cdecl vprintf(CONST CHAR16* format, va_list list);
-UINTN __cdecl sprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, ...);
-UINTN __cdecl vsprintf(CHAR16* buffer, UINTN bufferSize, CONST CHAR16* format, va_list list);
-UINTN __cdecl fprintf(EFI_FILE_PROTOCOL* file, CONST CHAR16* CONST format, ...);
+VOID __cdecl printf(CONST CHAR16* CONST format, ...);
+VOID __cdecl vprintf(CONST CHAR16* CONST format, va_list list);
+UINTN __cdecl sprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, ...);
+UINTN __cdecl vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, va_list list);
+UINTN __cdecl fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...);
 
 UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format);
-UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* text, UINTN* CONST columns, UINTN* CONST rows);
+UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST columns, UINTN* CONST rows);
 
-EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* root, CONST CHAR16* CONST filename, UINT64 openMode, UINT64 attributes);
-VOID CloseFile(EFI_FILE_PROTOCOL* file);
-BOOLEAN DeleteFile(EFI_FILE_PROTOCOL* file);
-EFI_STATUS ReadFile(EFI_FILE_PROTOCOL* file, UINTN* CONST size, VOID* CONST buffer);
-EFI_STATUS WriteFile(EFI_FILE_PROTOCOL* file, UINTN* CONST size, VOID* CONST buffer);
-EFI_STATUS SetPosition(EFI_FILE_PROTOCOL* file, UINT64 position);
-UINT64 GetPosition(EFI_FILE_PROTOCOL* file);
+EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* CONST root, CONST CHAR16* CONST filename, UINT64 openMode, UINT64 attributes);
+VOID CloseFile(EFI_FILE_PROTOCOL* CONST file);
+BOOLEAN DeleteFile(EFI_FILE_PROTOCOL* CONST file);
+EFI_STATUS ReadFile(EFI_FILE_PROTOCOL* CONST file, UINTN* CONST size, VOID* CONST buffer);
+EFI_STATUS WriteFile(EFI_FILE_PROTOCOL* CONST file, UINTN* CONST size, CONST VOID* CONST buffer);
+EFI_STATUS SetPosition(EFI_FILE_PROTOCOL* CONST file, UINT64 position);
+UINT64 GetPosition(EFI_FILE_PROTOCOL* CONST file);
