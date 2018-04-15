@@ -282,7 +282,7 @@ UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST colu
 EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* CONST root, CONST CHAR16* CONST filename, UINT64 openMode, UINT64 attributes) {
 	EFI_FILE_PROTOCOL* newFile;
 
-	EFI_STATUS status = root->Open(root, &newFile, filename, openMode, attributes);
+	EFI_STATUS status = root->Open((EFI_FILE_PROTOCOL*)root, &newFile, (CHAR16*)filename, openMode, attributes);
 
 	if (status == EFI_SUCCESS) return newFile;
 	
@@ -310,7 +310,7 @@ EFI_STATUS ReadFile(EFI_FILE_PROTOCOL* CONST file, UINTN* CONST size, VOID* CONS
 }
 
 EFI_STATUS WriteFile(EFI_FILE_PROTOCOL* CONST file, UINTN* CONST size, CONST VOID* CONST buffer) {
-	return file->Write(file, size, buffer);
+	return file->Write(file, size, (VOID*)buffer);
 }
 
 EFI_STATUS SetPosition(EFI_FILE_PROTOCOL* CONST file, UINT64 position) {
