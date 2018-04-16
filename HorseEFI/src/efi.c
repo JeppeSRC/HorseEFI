@@ -94,6 +94,28 @@ UINTN strlen(CONST CHAR16* CONST string) {
 }
 
 VOID print(CONST CHAR16* CONST string) {
+	CHAR16* str = (CHAR16*)string;
+
+	UINTN len = strlen(string);
+
+	UINTN last = 0;
+
+	for (UINTN i = 0; i < len; i++) {
+		if (str[i] == '\n') {
+			str[i] = 0;
+			systable->ConOut->OutputString(systable->ConOut, str+last);
+			systable->ConOut->SetCursorPosition(systable->ConOut, 0, systable->ConOut->Mode->CursorRow+1);
+			str[i] = '\n';
+			last = i+1;
+		}
+	}
+
+	if (last != len) {
+		systable->ConOut->OutputString(systable->ConOut, str+last);
+	}
+}
+
+VOID println(CONST CHAR16* CONST string) {
 	systable->ConOut->OutputString(systable->ConOut, (CHAR16*)string);
 }
 

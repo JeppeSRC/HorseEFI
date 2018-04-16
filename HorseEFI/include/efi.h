@@ -1437,6 +1437,7 @@ void* memcpy(void* dst, const void* src, unsigned long long size);
 UINTN strlen(CONST CHAR16* CONST string);
 
 VOID print(CONST CHAR16* CONST string);
+VOID println(CONST CHAR16* CONST string);
 VOID clearScreen();
 
 VOID __cdecl printf(CONST CHAR16* CONST format, ...);
