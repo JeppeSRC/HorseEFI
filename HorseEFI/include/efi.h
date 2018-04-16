@@ -1432,8 +1432,8 @@ typedef UINT8* va_list;
 
 VOID InitializeLibrary(EFI_HANDLE handle, EFI_SYSTEM_TABLE* systable);
 
-VOID _memset(VOID* dst, UINT8 v, UINTN size);
-VOID _memcpy(VOID* dst, CONST VOID* src, UINTN size);
+void* memset(void* dst, int v, unsigned long long size);
+void* memcpy(void* dst, const void* src, unsigned long long size);
 UINTN strlen(CONST CHAR16* CONST string);
 
 VOID print(CONST CHAR16* CONST string);

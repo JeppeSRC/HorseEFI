@@ -18,7 +18,7 @@ UINT32 uint32ToString(UINT32 v, UINT8 base, CHAR16* buffer) {
 	}
 
 	CHAR16 tmp[10];
-	_memcpy(tmp, buffer, sizeof(tmp));
+	memcpy(tmp, buffer, sizeof(tmp));
 
 	UINT32 start = 0;
 
@@ -45,7 +45,7 @@ UINT32 uint64ToString(UINT64 v, UINT8 base, CHAR16* buffer) {
 	}
 
 	CHAR16 tmp[19];
-	_memcpy(tmp, buffer, sizeof(tmp));
+	memcpy(tmp, buffer, sizeof(tmp));
 
 	UINT32 start = 0;
 
@@ -66,16 +66,22 @@ VOID InitializeLibrary(EFI_HANDLE shit, EFI_SYSTEM_TABLE* systableShit) {
 	systable = systableShit;
 }
 
-VOID _memset(VOID* dst, UINT8 v, UINTN size) {
+#pragma function(memset)
+void* memset(void* dst, int v, unsigned long long size) {
 	for (UINTN i = 0; i < size; i++) {
 		((UINT8*)dst)[i] = v;
 	}
+
+	return 0;
 }
 
-VOID _memcpy(VOID* dst, CONST VOID* src, UINTN size) {
+#pragma function(memcpy)
+void* memcpy(void* dst, const void* src, unsigned long long size) {
 	for (UINTN i = 0; i < size; i++) {
 		((UINT8*)dst)[i] = ((UINT8*)src)[i];
 	}
+
+	return 0;
 }
 
 #pragma function(strlen)
@@ -148,7 +154,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 
 					UINT32 num = uint32ToString((UINT32)va_arg(list, UINTN), 10, tmp);
 
-					_memcpy(buffer + printed, tmp, num * sizeof(CHAR16));
+					memcpy(buffer + printed, tmp, num * sizeof(CHAR16));
 					printed += num;
 					break;
 				}
@@ -158,7 +164,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 
 					UINT32 num = uint64ToString(va_arg(list, UINT64), 10, tmp);
 
-					_memcpy(buffer + printed, tmp, num * sizeof(CHAR16));
+					memcpy(buffer + printed, tmp, num * sizeof(CHAR16));
 					printed += num;
 					break;
 				}
@@ -168,7 +174,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 
 					uint32ToString((UINT32)va_arg(list, UINTN), 16, tmp);
 
-					_memcpy(buffer + printed, tmp, 8 * sizeof(CHAR16));
+					memcpy(buffer + printed, tmp, 8 * sizeof(CHAR16));
 					printed += 8;
 					break;
 				}
@@ -178,7 +184,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 
 					uint64ToString(va_arg(list, UINT64), 16, tmp);
 
-					_memcpy(buffer + printed, tmp, 16 * sizeof(CHAR16));
+					memcpy(buffer + printed, tmp, 16 * sizeof(CHAR16));
 					printed += 16;
 					break;
 				}
@@ -188,7 +194,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 					CHAR16* string = va_arg(list, CHAR16*);
 					UINTN len = strlen(string)-1;
 
-					_memcpy(buffer + printed, string, len * sizeof(CHAR16));
+					memcpy(buffer + printed, string, len * sizeof(CHAR16));
 					printed += len;
 					break;
 				}
