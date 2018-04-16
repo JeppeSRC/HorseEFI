@@ -18,7 +18,7 @@ UINT32 uint32ToString(UINT32 v, UINT8 base, CHAR16* buffer) {
 	}
 
 	CHAR16 tmp[10];
-	memcpy(tmp, buffer, sizeof(tmp));
+	_memcpy(tmp, buffer, sizeof(tmp));
 
 	UINT32 start = 0;
 
@@ -45,7 +45,7 @@ UINT32 uint64ToString(UINT64 v, UINT8 base, CHAR16* buffer) {
 	}
 
 	CHAR16 tmp[19];
-	memcpy(tmp, buffer, sizeof(tmp));
+	_memcpy(tmp, buffer, sizeof(tmp));
 
 	UINT32 start = 0;
 
@@ -148,7 +148,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 
 					UINT32 num = uint32ToString((UINT32)va_arg(list, UINTN), 10, tmp);
 
-					memcpy(buffer + printed, tmp, num * sizeof(CHAR16));
+					_memcpy(buffer + printed, tmp, num * sizeof(CHAR16));
 					printed += num;
 					break;
 				}
@@ -158,7 +158,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 
 					UINT32 num = uint64ToString(va_arg(list, UINT64), 10, tmp);
 
-					memcpy(buffer + printed, tmp, num * sizeof(CHAR16));
+					_memcpy(buffer + printed, tmp, num * sizeof(CHAR16));
 					printed += num;
 					break;
 				}
@@ -168,7 +168,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 
 					uint32ToString((UINT32)va_arg(list, UINTN), 16, tmp);
 
-					memcpy(buffer + printed, tmp, 8 * sizeof(CHAR16));
+					_memcpy(buffer + printed, tmp, 8 * sizeof(CHAR16));
 					printed += 8;
 					break;
 				}
@@ -178,7 +178,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 
 					uint64ToString(va_arg(list, UINT64), 16, tmp);
 
-					memcpy(buffer + printed, tmp, 16 * sizeof(CHAR16));
+					_memcpy(buffer + printed, tmp, 16 * sizeof(CHAR16));
 					printed += 16;
 					break;
 				}
@@ -188,7 +188,7 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 					CHAR16* string = va_arg(list, CHAR16*);
 					UINTN len = strlen(string)-1;
 
-					memcpy(buffer + printed, string, len * sizeof(CHAR16));
+					_memcpy(buffer + printed, string, len * sizeof(CHAR16));
 					printed += len;
 					break;
 				}

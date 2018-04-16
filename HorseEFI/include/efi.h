@@ -1436,9 +1436,6 @@ VOID _memset(VOID* dst, UINT8 v, UINTN size);
 VOID _memcpy(VOID* dst, CONST VOID* src, UINTN size);
 UINTN strlen(CONST CHAR16* CONST string);
 
-#define memset _memset
-#define memcpy _memcpy
-
 VOID print(CONST CHAR16* CONST string);
 VOID clearScreen();
 
