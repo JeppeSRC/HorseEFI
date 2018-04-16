@@ -1430,13 +1430,14 @@ typedef UINT8* va_list;
 #define va_arg(list, type) (*(type*)((list += va_size(type)) - va_size(type)))
 #define va_end(list) list = (va_list)0;
 
-#pragma warning(disable : 4391)
-
 VOID InitializeLibrary(EFI_HANDLE handle, EFI_SYSTEM_TABLE* systable);
 
-VOID memset(VOID* dst, UINT8 v, UINTN size);
-VOID memcpy(VOID* dst, CONST VOID* src, UINTN size);
+VOID _memset(VOID* dst, UINT8 v, UINTN size);
+VOID _memcpy(VOID* dst, CONST VOID* src, UINTN size);
 UINTN strlen(CONST CHAR16* CONST string);
+
+#define memset _memset
+#define memcpy _memcpy
 
 VOID print(CONST CHAR16* CONST string);
 VOID clearScreen();
