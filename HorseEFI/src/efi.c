@@ -7,17 +7,22 @@ static EFI_SYSTEM_TABLE* systable;
 
 CHAR16 chars[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
+UINT32 maxCharsU32[17] = { 0, 0, 32, 0, 0, 0, 0, 0, 11, 0, 10, 0, 0, 0, 0, 0, 8 };
+UINT32 maxCharsU64[17] = { 0, 0, 64, 0, 0, 0, 0, 0, 22, 0, 20, 0, 0, 0, 0, 0, 16 };
+
 UINT32 uint32ToString(UINT32 v, UINT8 base, CHAR16* buffer) {
 
 	UINT32 num = 0;
 
+	UINT32 max = maxCharsU32[base];
+
 	while (v > 0) {
-		if (num > 10) break;
+		if (num > max) break;
 		buffer[num++] = chars[v % base];
 		v /= base;
 	}
 
-	CHAR16 tmp[10];
+	CHAR16 tmp[32];
 	memcpy(tmp, buffer, sizeof(tmp));
 
 	UINT32 start = 0;
@@ -38,13 +43,15 @@ UINT32 uint64ToString(UINT64 v, UINT8 base, CHAR16* buffer) {
 
 	UINT32 num = 0;
 
+	UINT32 max = maxCharsU64[base];
+
 	while (v > 0) {
-		if (num > 19) break;
+		if (num > max) break;
 		buffer[num++] = chars[v % base];
 		v /= base;
 	}
 
-	CHAR16 tmp[19];
+	CHAR16 tmp[64];
 	memcpy(tmp, buffer, sizeof(tmp));
 
 	UINT32 start = 0;
