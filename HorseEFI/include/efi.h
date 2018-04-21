@@ -20,6 +20,9 @@ _______________________________________________
 | EfiACPIMemoryNVS             | ACPI NVS     |
 */
 //definitions
+#define 
+
+
 #define EFI_SYSTEM_TABLE_SIGNATURE 0x5453595320494249
 #define EFI_2_70_SYSTEM_TABLE_REVISION ((2<<16) | (70))
 #define EFI_2_60_SYSTEM_TABLE_REVISION ((2<<16) | (60))
@@ -886,6 +889,25 @@ typedef struct {
 #define EFI_SIMPLE_TEXT_INPUT_PROTOCOL_GUID \
 {0x387477c1,0x69c7,0x11d2,\
  {0x8e,0x39,0x00,0xa0,0xc9,0x69,0x72,0x3b}}
+
+#define EFI_SCANCODE_HOME		0x05
+#define EFI_SCANCODE_END		0x06
+#define EFI_SCANCODE_INSERT		0X07
+#define EFI_SCANCODE_DELETE		0x08
+#define EFI_SCANCODE_PAGEUP		0x09
+#define EFI_SCANCODE_PAGEDOWN	0x0A
+#define EFI_SCANCODE_F1			0x0B
+#define EFI_SCANCODE_F2			0x0C
+#define EFI_SCANCODE_F3			0x0D
+#define EFI_SCANCODE_F4			0x0E
+#define EFI_SCANCODE_F5			0x0F
+#define EFI_SCANCODE_F6			0x10
+#define EFI_SCANCODE_F7			0x11
+#define EFI_SCANCODE_F8			0x12
+#define EFI_SCANCODE_F9 		0x13
+#define EFI_SCANCODE_F10		0x14
+#define EFI_SCANCODE_ESCAPE		0x17
+
 
 typedef struct EFI_SIMPLE_TEXT_INPUT_PROTOCOL EFI_SIMPLE_TEXT_INPUT_PROTOCOL;
 
