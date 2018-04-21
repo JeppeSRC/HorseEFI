@@ -134,7 +134,8 @@ VOID print(CONST CHAR16* CONST string) {
 }
 
 VOID println(CONST CHAR16* CONST string) {
-	systable->ConOut->OutputString(systable->ConOut, (CHAR16*)string);
+	print(string);
+	print(L"\n");
 }
 
 VOID clearScreen() {
