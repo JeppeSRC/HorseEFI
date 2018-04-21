@@ -361,3 +361,16 @@ UINT64 GetPosition(EFI_FILE_PROTOCOL* CONST file) {
 
 	return pos;
 }
+
+VOID WaitEscapeAndExit() {
+	EFI_INPUT_KEY key;
+
+	while (1) {
+		systable->BootServices->Stall(100000);
+		systable->ConIn->ReadKeyStroke(systable->ConIn, &key);
+
+		if (key.ScanCode == 0x17) break;
+	}
+
+	systable->RuntimeServices->ResetSystem(EfiResetShutdown, 0, 0, 0);
+}
