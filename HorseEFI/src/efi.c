@@ -12,7 +12,7 @@ UINT32 maxCharsU32[17] = { 0, 0, 32, 0, 0, 0, 0, 0, 11, 0, 10, 0, 0, 0, 0, 0, 8 
 UINT32 maxCharsU64[17] = { 0, 0, 64, 0, 0, 0, 0, 0, 22, 0, 20, 0, 0, 0, 0, 0, 16 };
 
 UINT32 uint32ToString(UINT32 v, UINT8 base, CHAR16* buffer) {
-	if (v == 0) {
+	if (v == 0 && (base != 16 || base != 2)) {
 		buffer[0] = '0';
 		buffer[1] = 0;
 		return 1;
@@ -46,7 +46,7 @@ UINT32 uint32ToString(UINT32 v, UINT8 base, CHAR16* buffer) {
 }
 
 UINT32 uint64ToString(UINT64 v, UINT8 base, CHAR16* buffer) {
-	if (v == 0) {
+	if (v == 0 && (base != 16 || base != 2)) {
 		buffer[0] = '0';
 		buffer[1] = 0;
 		return 1;
