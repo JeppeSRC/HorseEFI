@@ -363,6 +363,8 @@ UINT64 GetPosition(EFI_FILE_PROTOCOL* CONST file) {
 }
 
 VOID WaitEscapeAndExit() {
+	println(L"Press Escape to exit!");
+
 	EFI_INPUT_KEY key;
 
 	while (1) {
