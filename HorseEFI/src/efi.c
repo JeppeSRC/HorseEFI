@@ -1,6 +1,7 @@
 #include <efi.h>
 
 #define HORSE_EFI_PRINTF_BUFFER_SIZE 2048
+#define ABS(x) (x > 0 ? x : x * -1)
 
 static EFI_HANDLE handle;
 static EFI_SYSTEM_TABLE* systable;
@@ -257,27 +258,54 @@ UINTN fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...) {
 }
 
 UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format) {
-	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION modeInfo;
-	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION* pModeInfo = &modeInfo;
+	EFI_GRAPHICS_OUTPUT_MODE_INFORMATION* pModeInfo = 0;
 
 	EFI_STATUS status = 0;
 	UINTN size = 0;
 
 	for (UINT32 i = 0; i < gop->Mode->MaxMode; i++) {
 		gop->QueryMode(gop, i, &size, &pModeInfo);
-		if (modeInfo.HorizontalResolution == *width && modeInfo.VerticalResolution == *height && modeInfo.PixelFormat == *format) {
+		if (pModeInfo->HorizontalResolution == *width && pModeInfo->VerticalResolution == *height && pModeInfo->PixelFormat == *format) {
 			return i;
 		}
 	}
 	
-	UINT32 best = gop->Mode->MaxMode-1;
+	UINT32 best = ~0;
 
-	gop->QueryMode(gop, best, &size, &pModeInfo);
+	if (*width == 0 && *height == 0) {
+		best = gop->Mode->MaxMode-1;
 
-	*width = modeInfo.HorizontalResolution;
-	*height = modeInfo.VerticalResolution;
-	*format = modeInfo.PixelFormat;
+		gop->QueryMode(gop, best, &size, &pModeInfo);
 
+		*width = pModeInfo->HorizontalResolution;
+		*height = pModeInfo->VerticalResolution;
+		*format = pModeInfo->PixelFormat;
+	} else {
+		UINT32 tmpWidth = *width;
+		UINT32 tmpIndex = 0;
+
+		for (UINT32 i = 0; i < gop->Mode->MaxMode; i++) {
+			gop->QueryMode(gop, i, &size, &pModeInfo);
+
+			INT32 w = (INT32)pModeInfo->HorizontalResolution;
+
+			INT32 wDiff = w - (INT32)(*width);
+
+			if (ABS(wDiff) < tmpWidth) {
+				tmpWidth = ABS(wDiff);
+				tmpIndex = i;
+			}
+		}
+
+		gop->QueryMode(gop, tmpIndex, &size, &pModeInfo);
+
+		*width = pModeInfo->HorizontalResolution;
+		*height = pModeInfo->VerticalResolution;
+		*format = pModeInfo->PixelFormat;
+
+		best = tmpIndex;
+	}
+	
 	return best;
 }
 
