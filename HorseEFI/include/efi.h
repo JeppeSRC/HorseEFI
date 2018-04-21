@@ -20,9 +20,6 @@ _______________________________________________
 | EfiACPIMemoryNVS             | ACPI NVS     |
 */
 //definitions
-#define 
-
-
 #define EFI_SYSTEM_TABLE_SIGNATURE 0x5453595320494249
 #define EFI_2_70_SYSTEM_TABLE_REVISION ((2<<16) | (70))
 #define EFI_2_60_SYSTEM_TABLE_REVISION ((2<<16) | (60))
