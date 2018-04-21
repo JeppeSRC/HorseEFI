@@ -118,11 +118,24 @@ VOID print(CONST CHAR16* CONST string) {
 
 	UINTN last = 0;
 
+	EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* out = systable->ConOut;
+
+	UINTN cols = 0;
+	UINTN rows = 0;
+
+	out->QueryMode(out, out->Mode->Mode, &cols, &rows);
+
 	for (UINTN i = 0; i < len; i++) {
 		if (str[i] == '\n') {
 			str[i] = 0;
 			systable->ConOut->OutputString(systable->ConOut, str+last);
-			systable->ConOut->SetCursorPosition(systable->ConOut, 0, systable->ConOut->Mode->CursorRow+1);
+			//systable->ConOut->SetCursorPosition(systable->ConOut, 0, systable->ConOut->Mode->CursorRow+1);
+			UINTN spaces = cols - out->Mode->CursorColumn;
+
+			while (spaces--) {
+				out->OutputString(out, L" ");
+			}
+
 			str[i] = '\n';
 			last = i+1;
 		}
