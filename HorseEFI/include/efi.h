@@ -1477,7 +1477,9 @@ VOID InitializeLibrary(EFI_HANDLE handle, EFI_SYSTEM_TABLE* systable);
 
 void* memset(void* dst, int v, unsigned long long size);
 void* memcpy(void* dst, const void* src, unsigned long long size);
+
 UINTN strlen(CONST CHAR16* CONST string);
+int strcmp(CONST CHAR16* CONST str1, CONST CHAR16* CONST str2);
 
 VOID print(CONST CHAR16* CONST string);
 VOID println(CONST CHAR16* CONST string);

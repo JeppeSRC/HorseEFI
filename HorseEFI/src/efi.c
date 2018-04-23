@@ -111,6 +111,21 @@ UINTN strlen(CONST CHAR16* CONST string) {
 	return len;
 }
 
+#pragma function(strcmp)
+int strcmp(CONST CHAR16* CONST str1, CONST CHAR16* CONST str2) {
+	int len = 0;
+
+	CHAR16 c = 0;
+
+	while ((c = str1[len++]) != 0) {
+		if (c != str2[len-1]) {
+			return len;
+		}
+	}
+
+	return 0;
+}
+
 VOID print(CONST CHAR16* CONST string) {
 	CHAR16* str = (CHAR16*)string;
 
