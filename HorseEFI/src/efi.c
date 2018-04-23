@@ -144,7 +144,7 @@ VOID print(CONST CHAR16* CONST string) {
 		if (str[i] == '\n') {
 			str[i] = 0;
 			systable->ConOut->OutputString(systable->ConOut, str+last);
-			//systable->ConOut->SetCursorPosition(systable->ConOut, 0, systable->ConOut->Mode->CursorRow+1);
+			
 			UINTN spaces = cols - out->Mode->CursorColumn;
 
 			while (spaces--) {
