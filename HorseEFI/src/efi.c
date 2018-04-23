@@ -119,11 +119,11 @@ int strcmp(CONST CHAR16* CONST str1, CONST CHAR16* CONST str2) {
 
 	while ((c = str1[len++]) != 0) {
 		if (c != str2[len-1]) {
-			return len;
+			return 0;
 		}
 	}
 
-	return 0;
+	return 1;
 }
 
 UINTN startsWith(CONST CHAR16* CONST string, CONST CHAR16* CONST start) {
@@ -131,16 +131,16 @@ UINTN startsWith(CONST CHAR16* CONST string, CONST CHAR16* CONST start) {
 	UINTN startLen = strlen(start);
 
 	if (startLen > strLen) {
-		return ~0;
+		return 0;
 	}
 
 	for (UINTN i = 0; i < startLen; i++) {
 		if (string[i] != start[i]) {
-			return ~0;
+			return 0;
 		}
 	}
 
-	return 0;
+	return 1;
 }
 
 VOID print(CONST CHAR16* CONST string) {
