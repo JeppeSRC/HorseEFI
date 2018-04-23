@@ -1481,6 +1481,8 @@ void* memcpy(void* dst, const void* src, unsigned long long size);
 UINTN strlen(CONST CHAR16* CONST string);
 int strcmp(CONST CHAR16* CONST str1, CONST CHAR16* CONST str2);
 
+UINTN startsWith(CONST CHAR16* CONST string, CONST CHAR16* CONST start);
+
 VOID print(CONST CHAR16* CONST string);
 VOID println(CONST CHAR16* CONST string);
 VOID clearScreen();
