@@ -452,7 +452,7 @@ VOID WaitEscapeAndExit() {
 	EFI_INPUT_KEY key;
 
 	while (1) {
-		systable->BootServices->Stall(100000);
+		systable->BootServices->Stall(1000);
 		systable->ConIn->ReadKeyStroke(systable->ConIn, &key);
 
 		if (key.ScanCode == 0x17) break;
