@@ -438,6 +438,10 @@ EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* CONST root, CONST CHAR16* CONST f
 	return 0;
 }
 
+VOID FlushFile(EFI_FILE_PROTOCOL* CONST file) {
+	file->Flush(file);
+}
+
 VOID CloseFile(EFI_FILE_PROTOCOL* CONST file) {
 	file->Close(file);
 }
