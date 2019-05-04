@@ -289,12 +289,10 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 			buffer[printed++] = format[i];
 		}
 
-		if (printed >= bufferSize) return printed;
+		if (printed >= bufferSize) return bufferSize;
 	}
-
-	buffer[printed++] = 0;
 	
-	return printed;
+	return (printed << 1);
 }
 
 UINTN fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...) {
@@ -303,12 +301,15 @@ UINTN fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...) {
 	va_list list;
 	
 	va_start(list, format);
-	UINTN written = vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list);
+	UINTN written = vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list) - 2;
 	va_end(list);
 
 	EFI_STATUS status = WriteFile(file, &written, buffer);
 
-	if (status != EFI_SUCCESS) written = 0;
+	if (status != EFI_SUCCESS) {
+		written = 0;
+		println(L"Failed to write to file\n");
+	}
 
 	return written;
 }
@@ -397,19 +398,42 @@ UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST colu
 }
 
 EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* CONST root, CONST CHAR16* CONST filename, UINT64 openMode, UINT64 attributes) {
-	EFI_FILE_PROTOCOL* newFile;
+	EFI_FILE_PROTOCOL* newFile = 0;
 
 	EFI_STATUS status = root->Open((EFI_FILE_PROTOCOL*)root, &newFile, (CHAR16*)filename, openMode, attributes);
 
 	if (status == EFI_SUCCESS) return newFile;
 	
-	if (status == EFI_NOT_FOUND) {
-		printf(L"Failed to open file: \"%s\" not found\n", filename);
-	} else if (status == EFI_WRITE_PROTECTED) {
-		printf(L"Failed to open file: \"%s\" write protected\n", filename);
-	} else {
-		printf(L"Failed to open file: \"%s\" unhandled error", filename);
+	switch (status) {
+		case EFI_NOT_FOUND:
+			print(L"File not found: ");
+			break;
+		case EFI_NO_MEDIA:
+			print(L"No media: ");
+			break;
+		case EFI_MEDIA_CHANGED:
+			print(L"Media changed: ");
+			break;
+		case EFI_DEVICE_ERROR:
+			print(L"Device error: ");
+			break;
+		case EFI_VOLUME_CORRUPTED:
+			print(L"Volume corrupted: ");
+			break;
+		case EFI_WRITE_PROTECTED:
+			print(L"Write protected: ");
+			break;
+		case EFI_ACCESS_DENIED:
+			print(L"Access denied: ");
+			break;
+		case EFI_OUT_OF_RESOURCES:
+			print(L"Out of resources: ");
+			break;
+		case EFI_VOLUME_FULL:
+			print(L"Volume full: ");
 	}
+
+	printf(L"\"%s\"\n", filename, status);
 
 	return 0;
 }
