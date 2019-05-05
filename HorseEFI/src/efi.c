@@ -431,6 +431,9 @@ EFI_FILE_PROTOCOL* OpenFile(EFI_FILE_PROTOCOL* CONST root, CONST CHAR16* CONST f
 			break;
 		case EFI_VOLUME_FULL:
 			print(L"Volume full: ");
+			break;
+		default:
+			printf(L"Unknown error code %H (file handle %H root handle %H): ", status, newFile, root);
 	}
 
 	printf(L"\"%s\"\n", filename, status);
