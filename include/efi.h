@@ -90,8 +90,11 @@ _______________________________________________
 #define EFI_WARN_STALE_DATA			5
 #define EFI_WARN_FILE_SYSTEM		6
 
-
+#ifdef __GNUC__
+#define EFIAPI __attribute__((ms_abi))
+#else
 #define EFIAPI __cdecl
+#endif
 
 #define IN 
 #define OUT 
@@ -118,7 +121,7 @@ typedef UINT32											UINTN;
 #endif
 
 typedef char											CHAR8;
-typedef short											CHAR16;
+typedef unsigned short											CHAR16;
 
 typedef void											VOID;
 typedef UINTN											EFI_STATUS;
@@ -1509,11 +1512,11 @@ VOID print(CONST CHAR16* CONST string);
 VOID println(CONST CHAR16* CONST string);
 VOID clearScreen();
 
-VOID __cdecl printf(CONST CHAR16* CONST format, ...);
-VOID __cdecl vprintf(CONST CHAR16* CONST format, va_list list);
-UINTN __cdecl sprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, ...);
-UINTN __cdecl vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, va_list list);
-UINTN __cdecl fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...);
+VOID printf(CONST CHAR16* CONST format, ...);
+VOID vprintf(CONST CHAR16* CONST format, va_list list);
+UINTN sprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, ...);
+UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, va_list list);
+UINTN fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...);
 
 UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format);
 UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST columns, UINTN* CONST rows);
