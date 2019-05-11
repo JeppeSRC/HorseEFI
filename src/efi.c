@@ -6,6 +6,8 @@
 static EFI_HANDLE handle;
 static EFI_SYSTEM_TABLE* systable;
 
+CHAR16 printBuffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
+
 CHAR16 chars[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 UINT32 maxCharsU32[17] = { 0, 0, 32, 0, 0, 0, 0, 0, 11, 0, 10, 0, 0, 0, 0, 0, 8 };
@@ -188,22 +190,18 @@ VOID clearScreen() {
 }
 
 VOID printf(CONST CHAR16* CONST format, ...) {
-	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
-
 	va_list args;
 	va_start(args, format);
-	vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, args);
+	vsprintf(printBuffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, args);
 	va_end(args);
 
-	print(buffer);
+	print(printBuffer);
 }
 
 VOID vprintf(CONST CHAR16* CONST format, va_list list) {
-	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
+	vsprintf(printBuffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list);
 
-	vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list);
-
-	print(buffer);
+	print(printBuffer);
 }
 
 UINTN sprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, ...) {
@@ -296,15 +294,13 @@ UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST forma
 }
 
 UINTN fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...) {
-	CHAR16 buffer[HORSE_EFI_PRINTF_BUFFER_SIZE];
-
 	va_list list;
 	
 	va_start(list, format);
-	UINTN written = vsprintf(buffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list) - 2;
+	UINTN written = vsprintf(printBuffer, HORSE_EFI_PRINTF_BUFFER_SIZE, format, list) - 2;
 	va_end(list);
 
-	EFI_STATUS status = WriteFile(file, &written, buffer);
+	EFI_STATUS status = WriteFile(file, &written, printBuffer);
 
 	if (status != EFI_SUCCESS) {
 		written = 0;
