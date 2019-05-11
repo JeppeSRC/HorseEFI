@@ -121,7 +121,7 @@ typedef UINT32											UINTN;
 #endif
 
 typedef char											CHAR8;
-typedef unsigned short											CHAR16;
+typedef unsigned short									CHAR16;
 
 typedef void											VOID;
 typedef UINTN											EFI_STATUS;
@@ -1490,13 +1490,12 @@ typedef struct EFI_SIMPLE_FILE_SYSTEM_PROTOCOL {
 
 
 
-typedef UINT8* va_list;
+typedef __builtin_va_list va_list;
 
 #define va_size(x) sizeof(x)
-
-#define va_start(list, arg) (list = ((va_list)&arg) + va_size(arg))
+#define va_start(list, arg) __builtin_ms_va_start(list, arg)
 #define va_arg(list, type) (*(type*)((list += va_size(type)) - va_size(type)))
-#define va_end(list) list = (va_list)0;
+#define va_end(list) __builtin_ms_va_end(list)
 
 VOID InitializeLibrary(EFI_HANDLE handle, EFI_SYSTEM_TABLE* systable);
 
@@ -1512,11 +1511,11 @@ VOID print(CONST CHAR16* CONST string);
 VOID println(CONST CHAR16* CONST string);
 VOID clearScreen();
 
-VOID printf(CONST CHAR16* CONST format, ...);
-VOID vprintf(CONST CHAR16* CONST format, va_list list);
-UINTN sprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, ...);
-UINTN vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, va_list list);
-UINTN fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...);
+VOID __attribute__((cdecl)) printf(CONST CHAR16* CONST format, ...);
+VOID __attribute__((cdecl)) vprintf(CONST CHAR16* CONST format, va_list list);
+UINTN __attribute__((cdecl)) sprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, ...);
+UINTN __attribute__((cdecl)) vsprintf(CHAR16* CONST buffer, UINTN bufferSize, CONST CHAR16* CONST format, va_list list);
+UINTN __attribute__((cdecl)) fprintf(EFI_FILE_PROTOCOL* CONST file, CONST CHAR16* CONST format, ...);
 
 UINT32 GetGraphicsMode(EFI_GRAPHICS_OUTPUT_PROTOCOL* CONST gop, UINT32* CONST width, UINT32* CONST height, EFI_GRAPHICS_PIXEL_FORMAT* CONST format);
 UINTN GetTextMode(EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL* CONST text, UINTN* CONST columns, UINTN* CONST rows);
